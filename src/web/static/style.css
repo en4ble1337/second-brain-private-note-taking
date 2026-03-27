@@ -1,0 +1,80 @@
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1rem;
+    color: #1a1a1a;
+    background: #f8f8f8;
+}
+
+header nav { padding: 0.5rem 0 1rem; }
+.brand { font-size: 1.25rem; font-weight: 600; text-decoration: none; color: #1a1a1a; }
+
+.disk-warning {
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    border-radius: 4px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+}
+
+.inbox-header { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.inbox-header form { display: flex; gap: 0.5rem; }
+.inbox-header input { padding: 0.4rem 0.75rem; border: 1px solid #ccc; border-radius: 4px; }
+.inbox-header button { padding: 0.4rem 0.75rem; background: #333; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+
+.result-count { color: #666; font-size: 0.9rem; }
+
+.note-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.75rem; }
+.note-card { background: #fff; border: 1px solid #e0e0e0; border-radius: 6px; }
+.note-card a { display: block; padding: 1rem; text-decoration: none; color: inherit; }
+.note-card a:hover { background: #f5f5f5; }
+
+.note-meta { display: flex; gap: 0.75rem; align-items: center; margin-bottom: 0.5rem; font-size: 0.85rem; color: #666; }
+.timestamp { font-weight: 500; }
+.badge { padding: 0.2rem 0.5rem; border-radius: 3px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
+.badge-complete { background: #d4edda; color: #155724; }
+.badge-pending  { background: #fff3cd; color: #856404; }
+.badge-failed   { background: #f8d7da; color: #721c24; }
+
+.note-preview { margin: 0; color: #333; }
+.empty-state { color: #888; text-align: center; padding: 2rem; }
+
+.pagination { display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem; }
+
+/* Note detail */
+.note-detail { background: #fff; border: 1px solid #e0e0e0; border-radius: 6px; padding: 1.5rem; }
+.cleaned-text { white-space: pre-wrap; line-height: 1.6; margin: 1rem 0; }
+.raw-transcript { margin: 1rem 0; border: 1px solid #e0e0e0; border-radius: 4px; padding: 0.75rem; }
+.raw-transcript summary { cursor: pointer; font-weight: 500; color: #666; }
+.raw-transcript p { margin: 0.5rem 0 0; color: #888; font-size: 0.9rem; white-space: pre-wrap; }
+.audio-player { margin-top: 1rem; }
+.audio-player audio { width: 100%; }
+
+/* Setup wizard */
+.setup-section { background: #fff; border: 1px solid #e0e0e0; border-radius: 6px; padding: 1.5rem; margin-bottom: 1.5rem; }
+.setup-section h2 { margin-top: 0; }
+.ingest-url { display: block; background: #f5f5f5; padding: 0.5rem 0.75rem; border-radius: 4px; word-break: break-all; margin-bottom: 0.5rem; }
+
+.remote-options { display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem; }
+.remote-option { border: 1px solid #e0e0e0; border-radius: 6px; padding: 1rem 1.25rem; }
+.remote-option h3 { margin: 0 0 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+.remote-option ol { margin: 0.5rem 0 0; padding-left: 1.25rem; }
+.remote-option li { margin-bottom: 0.4rem; }
+.remote-option code { background: #f5f5f5; padding: 0.15rem 0.4rem; border-radius: 3px; font-size: 0.85rem; word-break: break-all; }
+.option-note { font-size: 0.85rem; color: #666; margin: 0.75rem 0 0; }
+
+.option-badge { font-size: 0.7rem; font-weight: 600; padding: 0.2rem 0.5rem; border-radius: 3px; text-transform: uppercase; }
+.option-badge--default     { background: #e9ecef; color: #495057; }
+.option-badge--recommended { background: #d4edda; color: #155724; }
+
+.setup-section--future { border-style: dashed; background: #fafafa; }
+.coming-soon-badge { font-size: 0.7rem; font-weight: 600; padding: 0.2rem 0.5rem; border-radius: 3px; background: #e9ecef; color: #666; text-transform: uppercase; vertical-align: middle; }
+
+.integration-list { list-style: none; padding: 0; margin: 1rem 0 0; display: flex; flex-direction: column; gap: 0.75rem; }
+.integration-item { border: 1px solid #e0e0e0; border-radius: 6px; padding: 0.75rem 1rem; display: flex; flex-direction: column; gap: 0.25rem; }
+.integration-item--planned { opacity: 0.7; }
+.integration-item strong { font-size: 1rem; }
+.integration-item span { font-size: 0.875rem; color: #555; }

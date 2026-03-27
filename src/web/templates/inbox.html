@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Inbox — Second Brain{% endblock %}
+{% block content %}
+
+{% if disk_warning %}
+<div class="disk-warning">
+    ⚠️ Disk space warning: storage is over 80% full. Consider freeing up space.
+</div>
+{% endif %}
+
+<div class="inbox-header">
+    <h1>Notes</h1>
+    <form method="get" action="/">
+        <input type="text" name="q" value="{{ query or '' }}" placeholder="Search notes…">
+        <button type="submit">Search</button>
+        {% if query %}<a href="/">Clear</a>{% endif %}
+    </form>
+</div>
+
+{% if query %}
+<p class="result-count">{{ total }} note{{ 's' if total != 1 }} found for "<strong>{{ query }}</strong>"</p>
+{% else %}
+<p class="result-count">{{ total }} note{{ 's' if total != 1 }}</p>
+{% endif %}
+
+{% if notes %}
+<ul class="note-list">
+{% for note in notes %}
+<li class="note-card">
+    <a href="/notes/{{ note.id }}">
+        <div class="note-meta">
+            <span class="timestamp">{{ note.created_at.strftime('%Y-%m-%d %H:%M') }}</span>
+            {% if note.audio_duration_seconds %}
+            <span class="duration">{{ "%.0f"|format(note.audio_duration_seconds) }}s</span>
+            {% endif %}
+            <span class="badge badge-complete">complete</span>
+        </div>
+        <p class="note-preview">{{ note.cleaned_text[:100] }}{% if note.cleaned_text|length > 100 %}…{% endif %}</p>
+    </a>
+</li>
+{% endfor %}
+</ul>
+
+{% if total > page_size %}
+<div class="pagination">
+    {% if page > 1 %}<a href="/?page={{ page - 1 }}{% if query %}&q={{ query }}{% endif %}">← Previous</a>{% endif %}
+    <span>Page {{ page }}</span>
+    {% if page * page_size < total %}<a href="/?page={{ page + 1 }}{% if query %}&q={{ query }}{% endif %}">Next →</a>{% endif %}
+</div>
+{% endif %}
+
+{% else %}
+<p class="empty-state">{% if query %}No notes match your search.{% else %}No notes yet. Start recording!{% endif %}</p>
+{% endif %}
+
+{% endblock %}

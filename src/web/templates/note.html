@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Note — Second Brain{% endblock %}
+{% block content %}
+
+<div class="note-detail">
+    <div class="note-meta">
+        <a href="/">← Back to inbox</a>
+        <span class="timestamp">{{ note.created_at.strftime('%Y-%m-%d %H:%M') }}</span>
+        {% if note.audio_duration_seconds %}
+        <span class="duration">{{ "%.0f"|format(note.audio_duration_seconds) }}s recording</span>
+        {% endif %}
+    </div>
+
+    <div class="cleaned-text">
+        {{ note.cleaned_text }}
+    </div>
+
+    <details class="raw-transcript">
+        <summary>Raw transcript</summary>
+        <p>{{ note.raw_transcript }}</p>
+    </details>
+
+    <div class="audio-player">
+        <audio controls src="/audio/{{ audio_filename }}">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
+</div>
+
+{% endblock %}

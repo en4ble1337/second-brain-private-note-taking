@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% block title %}Setup — Second Brain{% endblock %}
+{% block content %}
+
+<h1>Setup Wizard</h1>
+
+<section class="setup-section">
+    <h2>Your Ingest URL</h2>
+    <code class="ingest-url">{{ ingest_url }}</code>
+    <p>Token (first 6 chars): <code>{{ masked_token }}</code></p>
+</section>
+
+<section class="setup-section">
+    <h2>iOS Shortcut Setup</h2>
+    <ol>
+        <li>Open the <strong>Shortcuts</strong> app on your iPhone.</li>
+        <li>Create a new shortcut.</li>
+        <li>Add action: <strong>Record with Voice Memos</strong>.</li>
+        <li>Add action: <strong>Get Contents of URL</strong>:
+            <ul>
+                <li>URL: <code>{{ ingest_url }}</code></li>
+                <li>Method: <strong>POST</strong></li>
+                <li>Headers: <code>Authorization: Bearer &lt;your-full-token&gt;</code></li>
+                <li>Request Body: <strong>Form</strong></li>
+                <li>Add field <code>audio</code> = Shortcut Input</li>
+                <li>Add field <code>source</code> = <code>ios</code></li>
+            </ul>
+        </li>
+        <li>Assign to <strong>Action Button</strong> in Settings → Action Button.</li>
+    </ol>
+</section>
+
+<section class="setup-section">
+    <h2>Android Tasker Setup</h2>
+    <ol>
+        <li>Create a Tasker Profile triggered by a Quick Settings tile.</li>
+        <li>Add a task: <strong>Record Audio</strong> to a temp file.</li>
+        <li>Add a task: <strong>HTTP Request</strong>:
+            <ul>
+                <li>Method: POST</li>
+                <li>URL: <code>{{ ingest_url }}</code></li>
+                <li>Body: multipart with field <code>audio</code> = the recorded file, <code>source</code> = <code>android</code></li>
+                <li>Header: <code>Authorization: Bearer &lt;your-full-token&gt;</code></li>
+            </ul>
+        </li>
+    </ol>
+</section>
+
+<section class="setup-section">
+    <h2>Remote Access</h2>
+    <p>By default this appliance is only reachable on your home LAN.
+    If you record a note while away from home, the ingest request will fail.
+    Choose an option below based on your needs.</p>
+
+    <div class="remote-options">
+
+        <div class="remote-option">
+            <h3>Local Only <span class="option-badge option-badge--default">Default</span></h3>
+            <p>No action needed. The brain is only accessible on your home network.
+            Record notes at home; use Voice Memos as a manual buffer when away.</p>
+        </div>
+
+        <div class="remote-option">
+            <h3>Tailscale <span class="option-badge option-badge--recommended">Recommended</span></h3>
+            <p>Creates a private encrypted network between your phone and this device.
+            Works anywhere with an internet connection. Requires a free Tailscale account
+            (their coordination server handles key exchange but never sees your content).</p>
+            <ol>
+                <li>Install Tailscale on this device:
+                    <code>curl -fsSL https://tailscale.com/install.sh | sh &amp;&amp; sudo tailscale up</code>
+                </li>
+                <li>Install the <strong>Tailscale app</strong> on your iPhone/Android and sign in with the same account.</li>
+                <li>Find this device's Tailscale IP: <code>tailscale ip -4</code></li>
+                <li>Update your Shortcut/Tasker URL to use that IP instead of <code>mybrain.local</code>.</li>
+            </ol>
+        </div>
+
+        <div class="remote-option">
+            <h3>Cloudflare Tunnel</h3>
+            <p>Exposes this device via Cloudflare's infrastructure — no port forwarding, no VPN app on your phone.
+            Free tier is sufficient. Note: Cloudflare acts as a TLS termination proxy, meaning your audio
+            passes through their network.</p>
+            <ol>
+                <li>Create a free account at <strong>cloudflare.com</strong> and add a domain.</li>
+                <li>Install <code>cloudflared</code>:
+                    <code>curl -L https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-arm64 -o /usr/local/bin/cloudflared &amp;&amp; chmod +x /usr/local/bin/cloudflared</code>
+                </li>
+                <li>Authenticate: <code>cloudflared tunnel login</code></li>
+                <li>Create a tunnel: <code>cloudflared tunnel create brain</code></li>
+                <li>Configure it to forward to <code>http://localhost:80</code> and run as a service.</li>
+                <li>Update your Shortcut/Tasker URL to use your Cloudflare tunnel hostname.</li>
+            </ol>
+            <p class="option-note"><strong>Privacy note:</strong> If this appliance's purpose is fully local and private, prefer Tailscale or stay LAN-only.</p>
+        </div>
+
+    </div>
+</section>
+
+<section class="setup-section setup-section--future">
+    <h2>Integrations <span class="coming-soon-badge">Coming Soon</span></h2>
+    <p>Future releases will support pushing notes to external knowledge bases automatically after processing.</p>
+    <ul class="integration-list">
+        <li class="integration-item integration-item--planned">
+            <strong>Obsidian</strong>
+            <span>Append each note as a daily Markdown file to your Obsidian vault via the Local REST API plugin.</span>
+        </li>
+        <li class="integration-item integration-item--planned">
+            <strong>Affine</strong>
+            <span>Sync notes into an Affine workspace as structured pages via the Affine API.</span>
+        </li>
+        <li class="integration-item integration-item--planned">
+            <strong>Webhook</strong>
+            <span>POST the completed note JSON to any URL — bring your own integration.</span>
+        </li>
+    </ul>
+</section>
+
+{% endblock %}

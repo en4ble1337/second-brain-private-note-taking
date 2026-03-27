@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone='no'?>
+<!DOCTYPE service-group SYSTEM "avahi-service.dtd">
+<!--
+  Advertises the web UI on the LAN as http://mybrain.local
+  Place at: /etc/avahi/services/brain.service
+  Requires avahi-daemon running: sudo systemctl enable --now avahi-daemon
+-->
+<service-group>
+  <name replace-wildcards="yes">Local Second Brain on %h</name>
+  <service>
+    <type>_http._tcp</type>
+    <port>80</port>
+    <txt-record>path=/</txt-record>
+    <txt-record>description=Local voice note capture and knowledge system</txt-record>
+  </service>
+</service-group>
