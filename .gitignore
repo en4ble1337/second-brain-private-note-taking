@@ -24,3 +24,4 @@ data/
 db/
 *.db
 *.sqlite3
+setup_launchpad.py
